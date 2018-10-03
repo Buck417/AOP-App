@@ -38,7 +38,7 @@
 						</g>
 						</svg>
 					</td></tr>
-					<tr><td class="iconTabText">Activity Status</td></tr>
+					<tr><td class="iconTabText">Activities</td></tr>
 				</table>
 			</a></li>
 		</ul>
@@ -46,8 +46,11 @@
 
 	<div id="calculations" class="col s12">
 		<div id="calculationsBlurb" class="col s12" style="display:block">
-			Shows you all of your saved calculations for easy recall.
+			<p>Shows you all of your saved calculations from the LL Calculator, for easy recall.</p>
+			<p>Click the Save button after a calculation and provide a name for the calculation.</p>
+			<p>Add a group name to group related calculations.</p>
 		</div>
+		<div id="savedCalculations" class="col s12"></div>
 	</div>
 
 
@@ -55,10 +58,14 @@
 		<div id="searchesBlurb" class="col s12" style="display:block">
 			Your saved search terms will be displayed here.
 		</div>
+		<div id="savedSearches" class="col s12"></div>
 	</div>
 
 	<div id="activityStatus" class="col s12">
-		As you complete activities and quizes your results will be displayed here.
+		<div id="activityBlurb" class="col s12" style="display:block">
+			As you complete activities and quizes your results will be displayed here.
+		</div>
+		<div id="savedScores" class="col s12"></div>
 	</div>
 
 </div>
@@ -69,6 +76,9 @@
 </div>
 
 <script type="text/javascript">
+openSearchDB();
+openUserInfoDB();
+openScoresDB();
 	$(document).ready(function(){
 		$('.tabs').tabs();
 		$('.collapsible').collapsible();
@@ -100,6 +110,7 @@
 		 $(".searchIcon").css("fill", "#424242");
 		 $(".calculatorIcon").css("fill", "#424242");
 
+		 displayScoresInBinder();
 	}
 
 

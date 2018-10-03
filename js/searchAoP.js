@@ -5,9 +5,9 @@
 * properties - all of the attributes for a SearchTerm DB objectStore
 * [ terms - the string of values searched for
 *   domains - a list of domains searched through.
-*    [  acronyms - true/false
-*       glossary - true/false
-*       handbook - true/false
+*    [  "acronyms",
+*       "glossary",
+*       "handbook"
 *       *** may modify amount of domains in future ***
 *    ]
 * ]
@@ -91,7 +91,7 @@ function searchInValue(term, myArray) {
     if (myArray[i].value.includes(term)) {
       area = myArray[i].area;
       if (area === "handbook-pdf") {
-        let link = term + ' - <a href="../pdf/aop-handbook.pdf#page=' + myArray[i].page + '">' +
+        let link = term + ' - <a href="pdf/aop-handbook.pdf#page=' + myArray[i].page + '" target="_blank">' +
         myArray[i].key + '</a></br>'
         results.push(link);
       } else {
@@ -194,8 +194,8 @@ function getIndex(type) {
 }
 
 function displaySearchesInBinder() {
-  let viewResults = document.getElementById("searches");
-  // viewResults.innerHTML = "";
+  document.getElementById("savedSearches").innerHTML = "";
+  //viewResults.innerHTML = "";
 
 
   getAllSearches( (results) => {
@@ -203,39 +203,54 @@ function displaySearchesInBinder() {
       document.getElementById("searchesBlurb").style.display = "block";
     } else {
       document.getElementById("searchesBlurb").style.display = "none";
-
-      let searchUl = document.getElementById("searchList");
-      if (searchUl == null) {
-        searchUl = document.createElement("ul");
-        searchUl.setAttribute("id", "searchList");
-      } else {
-        searchUl.innerHTML = "";
-      }
-
-
-
-      results.forEach( (result) => {
-        let termLi = document.createElement("li");
-        let text = '"' + result.terms + '" in domains:';
-        result.domains.forEach( (domain) => {
-          text += ' "' + domain + '"';
-        });
-
-        text += ".";
-
-        let record = document.createTextNode(text);
-        termLi.appendChild(record);
-        searchUl.appendChild(termLi);
-
-      });
-
-      if (!$('searches').find('#searchList').length) {
-
-        viewResults.appendChild(searchUl);
-      }
-
     }
+
+
+    results.forEach( (result) => {
+
+      $('<div>', {
+        id: "collapseSearch" + result.id,
+        class: "row collapseGroup"
+      }).append( $('<ul>', {
+        class: "collapsible",
+        style: "background-color:#eeeeee;"
+      }).append( $('<li>', {
+      }).append( $('<div>', {
+        id: result.id,
+        class:  "col s11 collapsible-header",
+        text: result.terms
+      })).append( $('<div>', {
+        class: "col s1 headerCollapsible",
+        style: "padding:0"
+      }).append( $('<img>', {
+        src: "css/svg/trash.svg",
+        id: "trashImg",
+        style: "vertical-align:middle; width: 20px; height: 20px;",
+        onclick: "deleteSearchItem(" + result.id + ");"
+      }))).append( $('<div>', {
+        class: "col 12 collapsible-body collapseBody"
+      }).append( $('<ul>', {
+         id: "searchDomains" + result.id
+      }))))).appendTo('#savedSearches');
+      $('.collapsible').collapsible();
+      var ul = document.getElementById("searchDomains" + result.id);
+      result.domains.forEach( (domain) =>{
+        //var candidate = document.getElementById("candidate");
+        var li = document.createElement("li");
+        //li.setAttribute('id',candidate.value);
+        li.appendChild(document.createTextNode(domain));
+        ul.appendChild(li);
+      })
+    });
   });
 }
 
-openSearchDB();
+function deleteSearchItem(searchId) {
+  itemDB.deleteItem(searchTermsDS, searchId, (e) => {
+    console.log("Deleted Search Item '" + searchId + "'");
+    displaySearchesInBinder();
+  });
+}
+
+
+//openSearchDB();

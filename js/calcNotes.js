@@ -1,6 +1,7 @@
 const databaseName = "Calculations";
 const datastoreName = "calculations";
 const version = 1;
+const properties = ["name", "cType", "wip", "throughput", "flowtime", "takt", "thrTimeType", "flowTimeType", "taktTimeType", "group"];
 const groupPropertyName = "group";
 
 /**
@@ -8,16 +9,11 @@ const groupPropertyName = "group";
 * and creates a list of records.
 */
 function notesFetchAllCalcGroups(){
-  itemDB.databaseExists(databaseName, version, datastoreName, function(datastoreExists){
-    if(datastoreExists){
-      itemDB.simpleOpen(databaseName, version, datastoreName, function() {
-        itemDB.fetchAll(datastoreName, function(myRecords){
-          buildCalcGroups(myRecords, groupPropertyName);
-        });
-      });
-    }
-  })
-
+  itemDB.open(databaseName, version, datastoreName, "", properties, true, function() {
+    itemDB.fetchAll(datastoreName, function(myRecords){
+      buildCalcGroups(myRecords, groupPropertyName);
+    });
+  });
 }
 
 /**
@@ -80,6 +76,7 @@ function buildCalcFormula(record){
 * records - collection of categorized records to display
 */
 function displayCalcGroups(records){
+  document.getElementById("savedCalculations").innerHTML = "";
   if(records[0] != null){
     document.getElementById("calculationsBlurb").style.display = "none";
   }
@@ -100,42 +97,79 @@ function displayCalcGroups(records){
 
     $('<div>', {							//<div class="row collapseGroup">
     class: "row collapseGroup"
-}).append( $('<ul>', {				//<ul class="collapsible " style="background-color:#eeeeee;">
-    class: "collapsible ",
-    style: "background-color:#eeeeee;"
+  }).append( $('<ul>', {				//<ul class="collapsible " style="background-color:#eeeeee;">
+  class: "collapsible ",
+  style: "background-color:#eeeeee;"
 }).append( $('<li>', {        //<li>
-  	id: i
+  id: i
 }).append( $('<div>', {				//<div id="groupA" class="col s10 collapsible-header"><b>All</b></div>
-    id: "group" + i,
-    class: "col s10 collapsible-header",
-    text: groupID
+id: "group" + i,
+class: "col s10 collapsible-header",
+text: groupID
 })).append( $('<div>', {			//<div class="col s1 headerCollapsible" style="padding:0">				</div>
-    class: "col s1 headerCollapsible",
-    style: "padding:0"
+class: "col s1 headerCollapsible",
+style: "padding:0"
 }).append( $('<img>', {				//<img src="css/svg/mail.svg" height="20px" width="20px" style="vertical-align:middle;">
-    src: "css/svg/mail.svg",
-    id: "mailImg",
-    style: "vertical-align:middle; width: 20px; height: 20px;",
-    onclick: "displayAlert();"
+src: "css/svg/mail.svg",
+id: "mailImg",
+style: "vertical-align:middle; width: 20px; height: 20px;",
+onclick: "createCalculationsEmail();"
 }))).append( $('<div>', {			//<div class="col s1 headerCollapsible" style="padding:0">			</div>
-    class: "col s1 headerCollapsible",
-    style: "padding:0"
+class: "col s1 headerCollapsible",
+style: "padding:0"
 }).append( $('<img>', {				//<img src="css/svg/trash.svg" height="20px" width="20px" style="vertical-align:middle;">
-    src: "css/svg/trash.svg",
-    id: "trashImg",
-    style: "vertical-align:middle; width: 20px; height: 20px;",
-    onclick: "displayAlert();"
+src: "css/svg/trash.svg",
+id: "trashImg",
+style: "vertical-align:middle; width: 20px; height: 20px;",
+onclick: "removeGroup(" + i + ")"
 }))).append( $('<div>', {			//<div class="col 12 collapsible-body collapseBody">
-    class: "col 12 collapsible-body collapseBody"
+class: "col 12 collapsible-body collapseBody"
 }).append( $('<ul>', {				//<ul id="groupName"></ul>
-    id: groupID
-}))))).appendTo('#calculations');
-    $('.collapsible').collapsible();
-    for(var j = 0; j < records[i].length; j++){
-      createCalcListElement(records[i][j], groupID);
-    }
-  }
+id: groupID
+}))))).appendTo('#savedCalculations');
+$('.collapsible').collapsible();
+for(var j = 0; j < records[i].length; j++){
+  createCalcListElement(records[i][j], groupID);
+}
+}
 
+}
+
+function createCalculationsEmail(groupId) {
+  let mailString = "mailto:";
+
+  getUserInfo( (info) => {
+    if (info != null && (info.primaryEmail != null && info.secondaryEmail != null)) {
+      setP2ToS2To( (emails) => {
+        mailString += emails;
+
+        console.log(mailString);
+
+        itemDB.fetchAllByQuery(datastoreName, groupPropertyName, groupId, (results) => {
+          mailString += setSubjectCalc(results[0]);
+          mailString += "&body=" + results[0].group + " Calculations: %0D%0A";
+          results.forEach( (result) => {
+            mailString += buildCalcFormula(result) + '%0D%0A';
+          });
+
+          window.open(mailString);
+        });
+      });
+    }
+  });
+
+}
+
+function removeGroup(groupID){
+  var groupStringId = "#group" + groupID;
+  var groupText = $(groupStringId).text();
+  var groupProperty = ""
+  if(groupText != "No Group"){
+    groupProperty = groupText;
+  }
+  itemDB.deleteWithoutKey(databaseName, datastoreName, "group", groupProperty, function(){
+    notesFetchAllCalcGroups();
+  })
 }
 
 /**
@@ -162,7 +196,7 @@ function createCalcResultsEventListener(){
   var el = document.getElementById("calculations");
   if(el){
     el.addEventListener("click", function(e) {
-      console.log(e.path[0]);
+      //console.log(e.path[0]);
       if(e.target && e.target.nodeName == "LI") {
         console.log(e.target.id + " was clicked");
       }
