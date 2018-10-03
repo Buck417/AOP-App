@@ -438,14 +438,14 @@ function displayListOfTableCharts(charts){
 
   charts.forEach((chart) =>{
     $('<div>', {
-      class: "row collapseGroup",
+      class: "row",
       style: "background-color:#eeeeee;"
     }).append( $('<div>', {
-      class: "tableChartItem col s11 collapsible-header",
+      class: "tableChartItem col s11",
       text: chart.name,
       id: chart.id
     })).append( $('<div>', {
-      class: "tableDeleteButton col s1 headerCollapsible",
+      class: "tableDeleteButton col s1",
       style: "padding:0",
     }).append( $('<img>', {
       src: "css/svg/trash.svg",
