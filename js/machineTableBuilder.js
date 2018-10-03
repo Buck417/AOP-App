@@ -438,8 +438,8 @@ function displayListOfTableCharts(charts){
 
   charts.forEach((chart) =>{
     $('<div>', {
-      style: "background-color:#eeeeee;",
-      class: "row collapseGroup"
+      class: "row collapseGroup",
+      style: "background-color:#eeeeee;"
     }).append( $('<div>', {
       class: "tableChartItem col s11 collapsible-header",
       text: chart.name,
