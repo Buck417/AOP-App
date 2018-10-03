@@ -443,7 +443,8 @@ function displayListOfTableCharts(charts){
     }).append( $('<div>', {
       class: "tableChartItem col s11",
       text: chart.name,
-      id: chart.id
+      id: chart.id,
+      onclick: "buildTableChartFromDatabase(" + chart.id+ ")"
     })).append( $('<div>', {
       class: "tableDeleteButton col s1",
       style: "padding:0",
