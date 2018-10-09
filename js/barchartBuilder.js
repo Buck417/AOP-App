@@ -352,7 +352,6 @@ function createBarChartsListEventListener(){
   var el = document.getElementById("bar_saved_charts");
   if(el){
     el.addEventListener("click", function(e) {
-      console.log(e.path[0]);
       if(e.target && e.target.classList[0] == "barChartItem") {
         var strId = e.target.id;
         var numId = parseInt(strId);
