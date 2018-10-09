@@ -391,8 +391,6 @@ function sendTableChartToDB(chartDBObject){
 * id - the id of the chart stored in the database
 */
 function buildTableChartFromDatabase(id){
-  console.log("Inside build chart with id: " + id);
-  alert("Chart button clicked with an id of " + id);
   itemDB.open("TableChartDatabase", 1, "tablechartDatastore", "", tablechartIndexes, true, function(){
     itemDB.fetchOneByKey("tablechartDatastore", id, function(result){
       $("#table_chart_choice").addClass("hidden_toggle");
