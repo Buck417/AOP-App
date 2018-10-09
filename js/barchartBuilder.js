@@ -321,8 +321,6 @@ function deleteBarChartFromDatabase(id){
 * charts - collection of chart objects to be displayed in a list
 */
 function displayListOfBarCharts(charts){
-  console.log(JSON.stringify(charts));
-
   charts.forEach((chart) =>{
     $('<div>', {
       class: "row collapseGroup"
@@ -352,7 +350,8 @@ function createBarChartsListEventListener(){
   var el = document.getElementById("bar_saved_charts");
   if(el){
     el.addEventListener("click", function(e) {
-      console.log(e.path[0]);
+      //This breaks Edge/Firefox/Safari because there is no e.path property
+      //console.log(e.path[0]);
       if(e.target && e.target.classList[0] == "barChartItem") {
         var strId = e.target.id;
         var numId = parseInt(strId);

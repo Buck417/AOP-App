@@ -434,8 +434,6 @@ function deleteTableChartFromDatabase(id){
 * charts - collection of chart objects to be displayed in a list
 */
 function displayListOfTableCharts(charts){
-  console.log(JSON.stringify(charts));
-
   charts.forEach((chart) =>{
     $('<div>', {
       class: "row",
@@ -464,7 +462,8 @@ function createTableChartsListEventListener(){
   var el = document.getElementById("saved_table_charts");
   if(el){
     el.addEventListener("click", function(e) {
-      console.log(e.path[0]);
+      //This breaks Edge/Firefox/Safari because there is no e.path property
+      //console.log(e.path[0]);
       if(e.target && e.target.classList[0] == "tableChartItem") {
         var strId = e.target.id;
         var numId = parseInt(strId);
