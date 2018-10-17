@@ -322,26 +322,55 @@ function deleteBarChartFromDatabase(id){
 */
 function displayListOfBarCharts(charts){
   charts.forEach((chart) =>{
-    $('<div>', {
-      class: "row collapseGroup"
-    }).append( $('<ul>', {
-      style: "background-color:#eeeeee;",
-      id: "chartList"
-    }).append( $('<div>', {
-      class: "barChartItem col s11 collapsible-header",
-      text: chart.name,
-      id: chart.id
-    })).append( $('<li>', {
-    }).append( $('<div>', {
-      class: "col s1 headerCollapsible",
-      style: "padding:0"
-    }).append( $('<img>', {
-      src: "css/svg/trash.svg",
-      id: chart.id,
-      style: "vertical-align:middle; width: 20px; height: 20px;"
-    }))))).appendTo('#bar_saved_charts');
+    // $('<div>', {
+    //   class: "row collapseGroup"
+    // }).append( $('<ul>', {
+    //   style: "background-color:#eeeeee;",
+    //   id: "chartList"
+    // }).append( $('<div>', {
+    //   class: "barChartItem col s11 collapsible-header",
+    //   text: chart.name,
+    //   id: chart.id
+    // })).append( $('<li>', {
+    // }).append( $('<div>', {
+    //   class: "col s1 headerCollapsible",
+    //   style: "padding:0"
+    // }).append( $('<img>', {
+    //   src: "css/svg/trash.svg",
+    //   id: chart.id,
+    //   style: "vertical-align:middle; width: 20px; height: 20px;"
+    // }))))).appendTo('#bar_saved_charts');
+
+
+    var html =
+    `<div class="row collapseGroup">
+      <ul style="background-color:#eeeeee;" id="chartList">
+        <div class="barChartItem col s11 collapsible-header" id=${ chart.id } text=${ chart.id }>
+          <li>
+            <div class="col s1 headerCollapsible" style="padding:0">
+              <img src="css/svg/trash.svg" id=${ chart.id } style="vertical-align:middle; width: 20px; heigth: 20px;">
+            </div>
+          </li>
+        </div>
+      </ul>
+    </div>`
+
+    html.appendTo('#bar_saved_charts');
   });
 }
+
+var html =
+`<div class="row collapseGroup">
+  <ul style="background-color:#eeeeee;" id="chartList">
+    <div class="barChartItem col s11 collapsible-header" id=${ chart.id } text=${ chart.id }>
+      <li>
+        <div class="col s1 headerCollapsible" style="padding:0">
+          <img src="css/svg/trash.svg" id=${ chart.id } style="vertical-align:middle; width: 20px; heigth: 20px;">
+        </div>
+      </li>
+    </div>
+  </ul>
+</div>`
 
 /**
 * Builds the event listener for the list items. Makes them clickable
