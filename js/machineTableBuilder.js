@@ -435,23 +435,38 @@ function deleteTableChartFromDatabase(id){
 */
 function displayListOfTableCharts(charts){
   charts.forEach((chart) =>{
-    $('<div>', {
-      class: "row",
-      style: "background-color:#eeeeee;"
-    }).append( $('<div>', {
-      class: "tableChartItem col s11",
-      text: chart.name,
-      id: chart.id,
-      onclick: "buildTableChartFromDatabase(" + chart.id+ ")"
-    })).append( $('<div>', {
-      class: "tableDeleteButton col s1",
-      style: "padding:0",
-    }).append( $('<img>', {
-      src: "css/svg/trash.svg",
-      id: chart.id,
-      style: "vertical-align:middle; width: 20px; height: 20px;"
-    }))).appendTo('#saved_table_charts');
+    // $('<div>', {
+    //   class: "row",
+    //   style: "background-color:#eeeeee;"
+    // }).append( $('<div>', {
+    //   class: "tableChartItem col s11",
+    //   text: chart.name,
+    //   id: chart.id,
+    //   onclick: "buildTableChartFromDatabase(" + chart.id+ ")"
+    // })).append( $('<div>', {
+    //   class: "tableDeleteButton col s1",
+    //   style: "padding:0",
+    // }).append( $('<img>', {
+    //   src: "css/svg/trash.svg",
+    //   id: chart.id,
+    //   style: "vertical-align:middle; width: 20px; height: 20px;"
+    // }))).appendTo('#saved_table_charts');
   });
+
+  var html =
+  `<div class="row collapseGroup" style="background-color:#eeeeee;">
+    <div class="tableChartItem col s11" text=${ chart.name } id=${ chart.id }>
+      <div class="barChartItem col s11 collapsible-header" id=${ chart.id } text=${ chart.id }>
+        <li>
+          <div class="tableDeleteButton col s1 headerCollapsible" style="padding:0">
+            <img src="css/svg/trash.svg" id=${ chart.id } style="vertical-align:middle; width: 20px; heigth: 20px;">
+          </div>
+        </li>
+      </div>
+    </ul>
+  </div>`
+
+  html.appendTo('#saved_table_charts');
 }
 
 /**

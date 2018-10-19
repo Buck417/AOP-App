@@ -359,19 +359,6 @@ function displayListOfBarCharts(charts){
   });
 }
 
-var html =
-`<div class="row collapseGroup">
-  <ul style="background-color:#eeeeee;" id="chartList">
-    <div class="barChartItem col s11 collapsible-header" id=${ chart.id } text=${ chart.id }>
-      <li>
-        <div class="col s1 headerCollapsible" style="padding:0">
-          <img src="css/svg/trash.svg" id=${ chart.id } style="vertical-align:middle; width: 20px; heigth: 20px;">
-        </div>
-      </li>
-    </div>
-  </ul>
-</div>`
-
 /**
 * Builds the event listener for the list items. Makes them clickable
 */
