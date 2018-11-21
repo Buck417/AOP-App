@@ -321,41 +321,27 @@ function deleteBarChartFromDatabase(id){
 * charts - collection of chart objects to be displayed in a list
 */
 function displayListOfBarCharts(charts){
+  console.log(JSON.stringify(charts));
+
   charts.forEach((chart) =>{
-    // $('<div>', {
-    //   class: "row collapseGroup"
-    // }).append( $('<ul>', {
-    //   style: "background-color:#eeeeee;",
-    //   id: "chartList"
-    // }).append( $('<div>', {
-    //   class: "barChartItem col s11 collapsible-header",
-    //   text: chart.name,
-    //   id: chart.id
-    // })).append( $('<li>', {
-    // }).append( $('<div>', {
-    //   class: "col s1 headerCollapsible",
-    //   style: "padding:0"
-    // }).append( $('<img>', {
-    //   src: "css/svg/trash.svg",
-    //   id: chart.id,
-    //   style: "vertical-align:middle; width: 20px; height: 20px;"
-    // }))))).appendTo('#bar_saved_charts');
-
-
-    var html =
-    `<div class="row collapseGroup">
-      <ul style="background-color:#eeeeee;" id="chartList">
-        <div class="barChartItem col s11 collapsible-header" id=${ chart.id } text=${ chart.id }>
-          <li>
-            <div class="col s1 headerCollapsible" style="padding:0">
-              <img src="css/svg/trash.svg" id=${ chart.id } style="vertical-align:middle; width: 20px; heigth: 20px;">
-            </div>
-          </li>
-        </div>
-      </ul>
-    </div>`
-
-    html.appendTo('#bar_saved_charts');
+    $('<div>', {
+      class: "row collapseGroup"
+    }).append( $('<ul>', {
+      style: "background-color:#eeeeee;",
+      id: "chartList"
+    }).append( $('<div>', {
+      class: "barChartItem col s11 collapsible-header",
+      text: chart.name,
+      id: chart.id
+    })).append( $('<li>', {
+    }).append( $('<div>', {
+      class: "col s1 headerCollapsible",
+      style: "padding:0"
+    }).append( $('<img>', {
+      src: "css/svg/trash.svg",
+      id: chart.id,
+      style: "vertical-align:middle; width: 20px; height: 20px;"
+    }))))).appendTo('#bar_saved_charts');
   });
 }
 
@@ -366,8 +352,7 @@ function createBarChartsListEventListener(){
   var el = document.getElementById("bar_saved_charts");
   if(el){
     el.addEventListener("click", function(e) {
-      //This breaks Edge/Firefox/Safari because there is no e.path property
-      //console.log(e.path[0]);
+      console.log(e.path[0]);
       if(e.target && e.target.classList[0] == "barChartItem") {
         var strId = e.target.id;
         var numId = parseInt(strId);
