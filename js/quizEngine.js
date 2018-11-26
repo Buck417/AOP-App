@@ -242,7 +242,7 @@ function nextQuestion() {
 * previously. 
 */
 function addRadioClickEvents() {
-	$(document).on("click", "[name='answerRadioGroup']", function (e) {
+	$(document).on("click", "#answerForm [id*='answer']", function (e) {
 		var str = e.currentTarget.id;
 		var i = str.charAt(str.length-1);
 		document.getElementById(i.toString()).checked = true;
