@@ -2,6 +2,38 @@ var slideIndex = 1;
 var total = 50;
 let currentQuiz;
 
+/* todd overlay */
+
+function openIOverlay(fLink) {
+  // alert('IOverlay clicked');
+
+  let iframe = document.createElement('iframe');
+  let iOl = document.getElementById("iOverlay");
+  iOl.width = window.innerWidth;
+  iOl.height = window.innerHeight;
+  iframe.width = window.innerWidth;
+  iframe.height = window.innerHeight;
+  iframe.id = "iOlFrame";
+  iframe.frameBorder = 0;
+  iframe.sandbox = 'allow-modals allow-scripts allow-same-origin';
+  iframe.setAttribute("src", fLink);
+  iOl.appendChild(iframe);
+  iOl.style.height = "100%";
+}
+
+function closeIOverlay() {
+  //alert('IOverlayClose clicked');
+
+  let iframe = document.getElementById('iOlFrame');
+  let iOl = document.getElementById("iOverlay");
+  //iframe.setAttribute("src", "about:blank");
+  iOl.removeChild(iframe);
+  iOl.style.height = "0%";
+}
+
+/* end todd overlay */
+
+
 function initalLoad(){
 
   $(".drag-target").on("swipeleft", function () {
@@ -160,8 +192,6 @@ function loadCalculatorModal(){
     $('#modal1').modal('open');
 
   }
-
-
 }
 
 function loadSearchModal(){
@@ -199,9 +229,12 @@ function loadSearchModal(){
       dismissible:false
     });
     $('#modal1').modal('open');
-
-
   }
+
+  function clickExitSlideshow()
+  {
+    window.location.href ="index.html";
+     }
 
   function loadNotesModal(){
 
@@ -367,8 +400,8 @@ function loadLandscapeModal(){
     $('#landscapeModal').modal({
       dismissible: false
     });
-    $('#landscapeModal').modal('open'); 
-    
+    $('#landscapeModal').modal('open');
+
   }
 
 }
@@ -627,7 +660,7 @@ function loadQuizList(){
 
   openQuestionsNScores();
 }
- 
+
 function loadQuiz(name, datastoreName){
   clearColor();
   closeGame();

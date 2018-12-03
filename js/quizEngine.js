@@ -219,7 +219,7 @@ function nextQuestion() {
 
 		answerContainer.setAttribute("class", "answerStyle");
 		answerContainer.setAttribute("name", "answerRadioGroup");
-		answerContainer.setAttribute("style", "cursor: pointer");
+		answerContainer.setAttribute("style", "cursor: pointer;"); // allows ios devices to utilize onclick.
 		// answerContainer.setAttribute("for", i);
 		answerText = document.createTextNode(question.Answers[i - 1]);
 		answerContainer.appendChild(currentAnswer);
@@ -243,7 +243,7 @@ function nextQuestion() {
 * previously. 
 */
 function addRadioClickEvents() {
-	$(document).on("click", "#answerForm [id*='answer']", function (e) {
+	$(document).on("click", "[name='answerRadioGroup']", function (e) {
 		var str = e.currentTarget.id;
 		var i = str.charAt(str.length-1);
 		document.getElementById(i.toString()).checked = true;
